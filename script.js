@@ -1,4 +1,4 @@
-// Obj Literal
+//1. Obj Literal
 let mahasiswa = {
   nama: "Ari",
   nim: "20202",
@@ -12,24 +12,26 @@ let mahasiswa = {
 console.log(mahasiswa);
 console.log(mahasiswa.sapa());
 
-// Function Declaration
+let objMhs = {
+  sapa: function () {
+    return `Hai ${this.nama}`;
+  },
+};
+
+//2. Function Declaration
 function Mahasiswa(nama, jurusan) {
-  let mahasiswa = {};
+  // Object Create
+  let mahasiswa = Object.create(objMhs);
   mahasiswa.jurusan = jurusan;
   mahasiswa.nama = nama;
-
-  mahasiswa.sapa = function () {
-    return `Hai ${this.nama}`;
-  };
 
   // Functional Dec. harus return objeknya
   return mahasiswa;
 }
-
-let mhs = Mahasiswa("leni", "ternak");
+let mhs = Mahasiswa("leni", "ternak", );
 console.log(mhs.sapa());
 
-// Constructor Funct. -> key new
+//3. Constructor Funct. -> key new
 // gaperlu return
 class Mahas {
   constructor(nama, jurusan) {
@@ -41,7 +43,6 @@ class Mahas {
     };
   }
 }
-
 let mahas = new Mahas("eri", "tambang");
-
 console.log(mahas.sapa());
+
