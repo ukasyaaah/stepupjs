@@ -23,4 +23,3 @@ const el = `<h2>Meaw</h2>
  <span class="color">${meaw.color} </span>
  </div>
 `;
-
