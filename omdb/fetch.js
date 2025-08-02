@@ -1,4 +1,4 @@
-const button = document.querySelector(".search-button");
+const searchButton = document.querySelector(".search-button");
 
 // button.addEventListener("click", function () {
 //   const inputKey = document.querySelector(".keyword");
@@ -28,16 +28,31 @@ const button = document.querySelector(".search-button");
 //     });
 // });
 
-button.addEventListener("click", async function () {
-  const inputKey = document.querySelector(".keyword");
-  const movies = await getMovies(inputKey.value);
-  updateUI(movies);
+searchButton.addEventListener("click", async function () {
+  try {
+    const inputKey = document.querySelector(".keyword");
+    const movies = await getMovies(inputKey.value);
+    updateUI(movies);
+  } catch (error) {
+    alert(error);
+  }
 });
 
 function getMovies(keyword) {
   return fetch("http://www.omdbapi.com/?apikey=5a7a8f9a&s=" + keyword)
-    .then((response) => response.json())
-    .then((response) => response.Search);
+    .then((response) => {
+      console.log(response);
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    })
+    .then((response) => {
+      if (response.Response == "False") {
+        throw new Error(response.Error);
+      }
+      return response.Search;
+    });
 }
 function updateUI(movies) {
   let cards = "";
@@ -45,8 +60,6 @@ function updateUI(movies) {
   const movCont = document.querySelector(".movie-container");
   movCont.innerHTML = cards;
 }
-
-
 
 // event binding
 document.addEventListener("click", async function (e) {
@@ -68,9 +81,6 @@ function updateUIDetail(movie) {
   const modalBody = document.querySelector(".modal-body");
   modalBody.innerHTML = detail;
 }
-
-
-
 
 function showCards(m) {
   return ` <div class="col-md-4 my-3">
