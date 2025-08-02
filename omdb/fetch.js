@@ -64,15 +64,24 @@ function updateUI(movies) {
 // event binding
 document.addEventListener("click", async function (e) {
   if (e.target.classList.contains("detail-button")) {
-    const imdbid = e.target.dataset.imdbid;
-    const movieDetail = await getMovieDetail(imdbid);
-    updateUIDetail(movieDetail);
+    try {
+      const imdbid = e.target.dataset.imdbid;
+      const movieDetail = await getMovieDetail(imdbid);
+      updateUIDetail(movieDetail);
+    } catch (error) {
+      alert(error);
+    }
   }
 });
 
 function getMovieDetail(imdbid) {
   return fetch("http://www.omdbapi.com/?apikey=5a7a8f9a&i=" + imdbid)
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    })
     .then((m) => m);
 }
 
